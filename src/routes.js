@@ -7,7 +7,7 @@ import Contact from './Contact.js'
 const history = createHistory()
 const routes = (
     <Router history={history}>
-        <Route path="/" component={App}>
+        <Route path="/" component={Contact}>
         <Route path="/Contact" component={Contact}/>
         </Route>
     </Router>
