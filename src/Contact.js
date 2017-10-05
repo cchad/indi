@@ -1,50 +1,37 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {Binder} from 'react-bind';
 import ThankYou from './ThankYou';
-import {Link, NavLink} from 'react-router-dom';
 
-var state;
-
-class Contact extends Component {
+export default class Contact extends Component {
   constructor() {
     super();
-    this.binder = new Binder(this);
-    this.bind = this.binder.bind;
     this.state = {
-      email: "xx"
+      email: "test@test.com"
     }
-    this
-      .binder
-      .setModel(this.state.model);
-    state = this.state;
+  }
+
+  onChange = (event) => {
+    this.setState({ email: event.target.value });
+    console.log('onchange:', this.state.email)
   }
 
   onSubmit = (event) => {
-    fetch('http://localhost:64575//api/prospects', {
+    console.log('onSubmit: ', this.state)
+    fetch('http://localhost:64575/api/prospects', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(this.state.email)
+      body: JSON.stringify(this.state)
     })
+    .then(() => {
+      ReactDOM.render(
+        <ThankYou/>, document.getElementById('root'));
+    })
+    .catch(err => alert(err))
+  }
 
-    ReactDOM.render(
-      <ThankYou/>, document.getElementById('root'));
-  }
-	updateValue(modifiedValue){
-		this.setState({
-			value:modifiedValue
-		})
-  }
-  
-	getInitialState(){
-		return{
-			value:'My Value'
-		}
-  }
-  
   render() {
     return (
 
@@ -55,28 +42,17 @@ class Contact extends Component {
         position: 'relative',
         top: '150px'
       }}>
+      <form onSubmit={this.onSubmit}>
         <div>
-          <InputBox1 value = {this.state.value}/>
-
-        </div>π∏
+          <input type="text" value={this.state.email} onChange={this.onChange}/>
+        </div>
         <div>
-             <button onClick={this.onSubmit}>Submit</button>
+             <button type="submit">Submit</button>
          </div>
+         </form>
       </div>
 
     );
 
-    var InputBox1 = React.createClass({
-      update:function(){
-        var modifiedValue=this.refs.inputValue.getDOMNode().value;
-        this.props.updateValue(modifiedValue);
-      },
-      render:function(){
-        return (<input type="text" ref="inputValue" value={this.props.value} onChange={this.update} />)
-      }
-    });
-
   }
 } 
-
-export default Contact

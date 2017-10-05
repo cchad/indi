@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 
 const videoId = 'R-AGc24ZCeM';
 const history = createHistory()
-class App extends Component {
+export default class App extends Component {
   constructor(props) {        
     super(props);
 
@@ -54,5 +54,3 @@ class App extends Component {
   }
  
 }
-
-export default App;
